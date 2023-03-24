@@ -1,6 +1,3 @@
-Date and dir content in workflow
-As the output of command ls -l shows, by default, the virtual environment that runs our workflow does not have any code! name: Hello World!
-
 on:
   push:
     branches:
