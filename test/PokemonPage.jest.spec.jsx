@@ -122,10 +122,7 @@ describe("<PokemonPage />", () => {
       "href",
       "/pokemon/ditto"
     );
-    expect(screen.getByText("Next")).toHaveAttribute(
-      "href",
-      "/pokemon/ditto"
-    );
+    expect(screen.getByText("Next")).toHaveAttribute("href", "/pokemon/ditto");
   });
 
   it("should not render previous and next urls if none exist", async () => {
@@ -141,5 +138,14 @@ describe("<PokemonPage />", () => {
 
     expect(screen.queryByText("Previous")).toBeNull();
     expect(screen.queryByText("Next")).toBeNull();
+  });
+  describe("Pokedex", function () {
+    it("front page can be opened", function () {
+      cy.visit("http://localhost:5001");
+      cy.contains("ivysaur");
+      cy.contains(
+        "Pokémon and Pokémon character names are trademarks of Nintendo."
+      );
+    });
   });
 });
