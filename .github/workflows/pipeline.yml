@@ -2,9 +2,15 @@ on:
   push:
     branches:
       - master
+  pull_request:
+    types: [closed]
+    branches:
+      - master
+
 jobs:
   simple_deployment_pipeline:
     runs-on: ubuntu-20.04
+    if: github.event_name == 'push' || (github.event_name == 'pull_request' && !contains(github.event.pull_request.title, '#skip'))
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
@@ -32,8 +38,9 @@ jobs:
   tag_release:
     needs: [simple_deployment_pipeline]
     runs-on: ubuntu-20.04
-    steps:
+    if: github.event_name == 'push' && !contains(github.head_commit.message, '#skip')    steps:
       - name: Bump version and push tag
         uses: anothrNick/github-tag-action@1.61.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DEFAULT_BUMP: patch
