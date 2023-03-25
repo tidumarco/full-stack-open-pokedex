@@ -45,3 +45,14 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
+      - name: Send Discord notification
+        uses: appleboy/discord-webhook-action@master
+        with:
+          url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          title: Deployment ${JOB_STATUS}
+          description: |
+            **Commit**: ${GITHUB_SHA}
+            **Branch**: ${GITHUB_REF}
+            **Repository**: ${GITHUB_REPOSITORY}
+        env:
+          JOB_STATUS: ${{ job.status }}
