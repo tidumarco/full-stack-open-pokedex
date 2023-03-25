@@ -1,0 +1,28 @@
+name: Periodic Health Check
+
+on:
+  schedule:
+    - cron: '0 */6 * * *' # every 6 hours
+
+jobs:
+  check_health:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check the deployed service URL
+        uses: jtalk/url-health-check-action@v3
+        with:
+          url: https://ancient-voice-6833.fly.dev/
+
+      - name: Notify on success
+        if: steps.check_health.outputs.status == 'success'
+        uses: appleboy/discord-action@master
+        with:
+          discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: 'The deployed service is up and running!'
+
+      - name: Notify on failure
+        if: steps.check_health.outputs.status == 'failure'
+        uses: appleboy/discord-action@master
+        with:
+          discord_webhook_url: ${{ secrets.DISCORD_WEBHOOK_URL }}
+          message: 'The deployed service is down! Check the logs for details.'
