@@ -46,7 +46,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           DEFAULT_BUMP: patch
       - name: Send Discord notification
-        uses: appleboy/discord-webhook-action@master
+        uses: rjstone/discord-webhook-notify@v1.0.4
         with:
           url: ${{ secrets.DISCORD_WEBHOOK_URL }}
           title: Deployment ${JOB_STATUS}
